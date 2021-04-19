@@ -1,88 +1,27 @@
 package br.com.zupacademy.bruno.proposta.controller.exceptions;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.xml.bind.ValidationException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
-    private MessageSource messageSource;
-    private static final Logger log = LoggerFactory.getLogger(ControllerExceptionHandler.class);
-
-    public ControllerExceptionHandler(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public StandardError handleValidationError(MethodArgumentNotValidException exception) {
-
-        List<ObjectError> globalErrors = exception.getBindingResult().getGlobalErrors();
-        List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-
-        return buildValidationErrors(globalErrors, fieldErrors);
-    }
-
-
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(BindException.class)
-    public StandardError handleValidationError(BindException exception) {
-
-        List<ObjectError> globalErrors = exception.getBindingResult().getGlobalErrors();
-        List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-
-        return buildValidationErrors(globalErrors, fieldErrors);
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public StandardError handleValidationError(HttpMessageNotReadableException exception) {
-        log.error("Problema na de desserializar o objeto",exception);
-
-        InvalidFormatException invalidFormat = (InvalidFormatException) exception.getCause();
-
-        List<ObjectError> globalErrors = List.of(new ObjectError("", invalidFormat.getValue()+" não é um valor válido"));
-        List<FieldError> fieldErrors = List.of();
-
-        return buildValidationErrors(globalErrors,
-                fieldErrors);
-    }
-
-    private StandardError buildValidationErrors(List<ObjectError> globalErrors, List<FieldError> fieldErrors) {
-        StandardError validationErrors = new StandardError();
-
-        globalErrors.forEach(error -> validationErrors.addError(getErrorMessage(error)));
-
-        fieldErrors.forEach(error -> {
-            String errorMessage = getErrorMessage(error);
-            validationErrors.addFieldError(error.getField(), errorMessage);
-        });
-        return validationErrors;
-    }
-
-    private String getErrorMessage(ObjectError error) {
-        return messageSource.getMessage(error, LocaleContextHolder.getLocale());
-    }
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<StandardError> validation(MethodArgumentNotValidException e, HttpServletRequest request){
+		
+		ValidationError err = new ValidationError(System.currentTimeMillis(), HttpStatus.UNPROCESSABLE_ENTITY.value(), "Erro de validação", e.getMessage(), request.getRequestURI());
+		
+		for (FieldError x : e.getBindingResult().getFieldErrors()) {
+			err.addError(x.getField(), x.getDefaultMessage());
+		}
+		
+		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
+	}
 }

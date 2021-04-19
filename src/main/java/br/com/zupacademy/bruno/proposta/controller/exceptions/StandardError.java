@@ -1,33 +1,40 @@
 package br.com.zupacademy.bruno.proposta.controller.exceptions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class StandardError {
 
-    private List<String> globalErrorMessages = new ArrayList<>();
-    private List<FieldMessage> fieldErrors = new ArrayList<>();
+	private Long timestamp;
+	private Integer status;
+	private String error;
+	private String message;
+	private String path;
 
-    public void addError(String message) {
-        globalErrorMessages.add(message);
-    }
+	public StandardError(Long timestamp, Integer status, String error, String message, String path) {
+		super();
+		this.timestamp = timestamp;
+		this.status = status;
+		this.error = error;
+		this.message = message;
+		this.path = path;
+	}
 
-    public void addFieldError(String field, String message) {
-        FieldMessage fieldError = new FieldMessage(field, message);
-        fieldErrors.add(fieldError);
-    }
+	public Long getTimestamp() {
+		return timestamp;
+	}
 
-    public List<String> getGlobalErrorMessages() {
-        return globalErrorMessages;
-    }
+	public Integer getStatus() {
+		return status;
+	}
 
-    public List<FieldMessage> getErrors() {
-        return fieldErrors;
-    }
+	public String getError() {
+		return error;
+	}
 
-    public int getNumberOfErrors() {
-        return this.globalErrorMessages.size() + this.fieldErrors.size();
-    }
+	public String getMessage() {
+		return message;
+	}
 
+	public String getPath() {
+		return path;
+	}
 
 }

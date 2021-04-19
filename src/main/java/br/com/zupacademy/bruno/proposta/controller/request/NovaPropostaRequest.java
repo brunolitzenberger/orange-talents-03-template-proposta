@@ -1,18 +1,21 @@
 package br.com.zupacademy.bruno.proposta.controller.request;
 
-import br.com.zupacademy.bruno.proposta.controller.model.Proposta;
-import br.com.zupacademy.bruno.proposta.controller.validators.CpfOuCnpj;
+import java.math.BigDecimal;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.math.BigDecimal;
+
+import br.com.zupacademy.bruno.proposta.controller.model.Proposta;
+import br.com.zupacademy.bruno.proposta.controller.validators.CpfOuCnpj;
+import br.com.zupacademy.bruno.proposta.controller.validators.UniqueValue;
 
 public class NovaPropostaRequest {
 
 	@NotBlank
 	@CpfOuCnpj
+	@NotBlank @UniqueValue(domainClass = Proposta.class, fieldName = "documento", message = "Proposta já cadastrada")
 	private String documento;
 	@Email
 	@NotBlank
@@ -57,5 +60,6 @@ public class NovaPropostaRequest {
 	public Proposta toModel(){
 		return new Proposta(documento, email, nome, endereco, salario);
 	}
+	
 
 }

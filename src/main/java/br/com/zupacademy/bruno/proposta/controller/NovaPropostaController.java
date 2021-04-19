@@ -1,45 +1,57 @@
 package br.com.zupacademy.bruno.proposta.controller;
 
 import java.net.URI;
-import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.google.gson.Gson;
+
+import br.com.zupacademy.bruno.proposta.controller.feign.CartoesCliente;
 import br.com.zupacademy.bruno.proposta.controller.model.Proposta;
 import br.com.zupacademy.bruno.proposta.controller.request.NovaPropostaRequest;
+import br.com.zupacademy.bruno.proposta.controller.response.ResponseCartao;
+import br.com.zupacademy.bruno.proposta.manager.GerenciadorDeTransacao;
+import feign.FeignException;
 
 @RestController
 @RequestMapping
 public class NovaPropostaController {
 
-	@PersistenceContext
-	private EntityManager em;
+	@Autowired
+	private GerenciadorDeTransacao transactionManager;
+	
+	@Autowired
+	private CartoesCliente cliente;
 	
 	@PostMapping("/propostas")
 	@Transactional
 	public ResponseEntity<?> novaProposta(@RequestBody @Valid NovaPropostaRequest request, UriComponentsBuilder builder){
 		Proposta novaProposta = request.toModel();
-		List<?> resultList = em.createQuery("SELECT 1 FROM Proposta WHERE documento = :documento").setParameter("documento", request.getDocumento()).getResultList();
-		if(!resultList.isEmpty()){
-			return ResponseEntity.unprocessableEntity().body("Proposta já cadastrada.");
-		}
-		em.persist(novaProposta);
+		transactionManager.salvaEComita(novaProposta);
+		solicitarCartao(novaProposta);
+		transactionManager.atualizaEComita(novaProposta);
 		URI uri = builder.path("/propostas/{id}").build(novaProposta.getId());
 		return ResponseEntity.created(uri).build();
 	}
 	
+	public void solicitarCartao(Proposta novaProposta) {
+		try {
+			ResponseCartao solicitacaoDeCartao = cliente.solicitacaoDeCartao(novaProposta.toRequestCartao());	
+			novaProposta.adicionaAvaliacaoFinanceira(solicitacaoDeCartao.toAvaliacao());
+		} catch (FeignException.UnprocessableEntity e) {
+			ResponseCartao solicitacaoDeCartao = new Gson().fromJson(e.contentUTF8(), ResponseCartao.class);
+			novaProposta.adicionaAvaliacaoFinanceira(solicitacaoDeCartao.toAvaliacao());
+		}		
+	}
 	
 }
 

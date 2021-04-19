@@ -17,6 +17,7 @@ import javax.validation.constraints.Positive;
 
 import br.com.zupacademy.bruno.proposta.controller.enums.ElegibilidadeParaCartao;
 import br.com.zupacademy.bruno.proposta.controller.request.RequestCartao;
+import br.com.zupacademy.bruno.proposta.controller.response.ResponseProposta;
 
 @Entity
 public class Proposta {
@@ -69,4 +70,9 @@ public class Proposta {
 		return this.cartao != null;
 	}
 
+	public ResponseProposta toResponse() {
+		return new ResponseProposta(nome, elegibilidade, cartao.dataEmissaoCartao());
+	}
+	
+	
 }

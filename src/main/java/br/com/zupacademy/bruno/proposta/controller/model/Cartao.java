@@ -79,5 +79,9 @@ public class Cartao {
 	public void adicionaCarteira(Carteira carteira) {
 		this.carteiras = carteira;
 	}
+	
+	public LocalDateTime dataEmissaoCartao() {
+		return emitidoEm;
+	}
 
 }

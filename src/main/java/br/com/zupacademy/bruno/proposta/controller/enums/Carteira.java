@@ -1,6 +1,6 @@
 package br.com.zupacademy.bruno.proposta.controller.enums;
 
-public enum AvaliacaoFinanceira {
-	NAO_ELEGIVEL,
-	ELEGIVEL;	
+public enum Carteira {
+	ASSOCIADA,
+	FALHA;
 }

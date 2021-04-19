@@ -10,5 +10,5 @@ import br.com.zupacademy.bruno.proposta.controller.response.ResponseCartao;
 public interface CartoesCliente {
 
     @PostMapping("/solicitacao")
-    ResponseCartao solicitacaoDeCartao(RequestCartao request);
+    ResponseCartao elegibilidadeCartao(RequestCartao request);
 }

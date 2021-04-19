@@ -4,11 +4,11 @@ public enum ResultadoSolicitacao {
 	SEM_RESTRICAO,
 	COM_RESTRICAO;
 	
-	public AvaliacaoFinanceira converter() {
+	public ElegibilidadeParaCartao converter() {
 		if(this.equals(SEM_RESTRICAO)) {
-			return AvaliacaoFinanceira.ELEGIVEL;
+			return ElegibilidadeParaCartao.ELEGIVEL;
 		}
-		return AvaliacaoFinanceira.NAO_ELEGIVEL;
+		return ElegibilidadeParaCartao.NAO_ELEGIVEL;
 	}
 	
 	

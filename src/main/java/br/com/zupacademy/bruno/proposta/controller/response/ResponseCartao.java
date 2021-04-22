@@ -45,4 +45,7 @@ public class ResponseCartao {
 		return resultadoSolicitacao.converter();
 	}
 
+	
+	
+
 }

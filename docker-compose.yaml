@@ -1,7 +1,30 @@
   
 version: '3'
 services:
-
+  proposta:
+     build: 
+        dockerfile: ./Dockerfile
+        context: .
+     image: "proposta"
+     container_name: proposta
+     environment:
+        ANALISE_URL: http://analise:9999
+        CARTAO_URL: http://contas:8888
+        PROFILE: prod
+        DATABASE_HOST: mysql
+        DATABASE_PORT: 3306
+        DATABASE_USER: bruno
+        DATABASE_PASSWORD: 12345
+        MYSQL_DATABASE: propostas
+     ports: 
+       - "8181:8080"
+     networks: 
+       - proposta-network
+     depends_on:
+        - analise
+        - contas
+        - transacoes
+        - mysql
   zookeeper:
     image: "confluentinc/cp-zookeeper:5.2.1"
     environment:
@@ -34,7 +57,20 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: keycloak
       POSTGRES_HOST: postgres
-
+  mysql:
+    image: mysql:5.7
+    volumes: 
+      - mysql-volume:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=propostas
+      - MYSQL_USER=bruno
+      - MYSQL_PASSWORD=12345
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    ports:
+      - 3305:3306
+    networks: 
+      - proposta-network
   keycloak:
     image: jboss/keycloak
     ports:
@@ -72,7 +108,8 @@ services:
       LOG_LEVEL: INFO
       URL_SISTEMA_CARTAO: http://contas:8888/api/cartoes
       JAEGER_ENDPOINT: http://jaeger:14268/api/traces
-
+    networks: 
+       - proposta-network
   contas:
     image: 'zupacademy/contas'
     ports:
@@ -81,7 +118,8 @@ services:
       SERVER_PORT: 8888
       LOG_LEVEL: INFO
       JAEGER_ENDPOINT: http://jaeger:14268/api/traces
-
+    networks: 
+       - proposta-network
   transacoes:
     image: 'zupacademy/transacoes'
     ports:
@@ -93,7 +131,8 @@ services:
       LOG_LEVEL: INFO
       KAFKA_HOST: "kafka:29092"
       JAEGER_ENDPOINT: http://jaeger:14268/api/traces
-
+    networks: 
+       - proposta-network
   jaeger:
     image: jaegertracing/all-in-one
     ports:
@@ -139,3 +178,7 @@ volumes:
   grafana-volume:
   prometheus-volume:
   postgres-volume:
+  mysql-volume:
+networks:
+  proposta-network:
+    driver: bridge

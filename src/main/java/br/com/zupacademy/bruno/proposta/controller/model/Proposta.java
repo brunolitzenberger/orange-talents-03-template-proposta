@@ -73,6 +73,12 @@ public class Proposta {
 	public ResponseProposta toResponse() {
 		return new ResponseProposta(nome, elegibilidade, cartao.dataEmissaoCartao());
 	}
+
+	@Override
+	public String toString() {
+		return "Proposta [id=" + id + ", documento=" + documento + ", email=" + email + ", nome=" + nome + ", endereco="
+				+ endereco + ", salario=" + salario + ", elegibilidade=" + elegibilidade + ", cartao=" + cartao + "]";
+	}
 	
 	
 }

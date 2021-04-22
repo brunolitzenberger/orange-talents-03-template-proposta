@@ -53,7 +53,7 @@ public class NovaPropostaController {
 	
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> acompanhar(@PathVariable Long id){
+	public ResponseEntity<?> acompanhar(@PathVariable Long id){	
 		Proposta proposta = em.find(Proposta.class, id);
 		if(proposta == null) {
 			return ResponseEntity.notFound().build();
@@ -63,7 +63,7 @@ public class NovaPropostaController {
 	
 	public void solicitarCartao(Proposta novaProposta) {
 		try {
-			ResponseCartao elegibilidadeParaCartao = cliente.elegibilidadeCartao(novaProposta.toRequestCartao());	
+			ResponseCartao elegibilidadeParaCartao = cliente.elegibilidadeCartao(novaProposta.toRequestCartao());
 			novaProposta.adicionaElegibilidade(elegibilidadeParaCartao.toElegibilidade());
 		} catch (FeignException.UnprocessableEntity e) {
 			ResponseCartao solicitacaoDeCartao = new Gson().fromJson(e.contentUTF8(), ResponseCartao.class);

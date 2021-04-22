@@ -37,16 +37,15 @@ public class CartaoPronto {
 						+ "AND  p.elegibilidade = :elegibilidade", Proposta.class)
 				.setParameter("elegibilidade", ElegibilidadeParaCartao.ELEGIVEL).getResultList();
 		try {
-
 			for (Proposta result : cartaoEmEspera) {
 				ResponseSolicitacaoCartao statusSolicitacaoDeCartao = solicitacaoDeCartao
-						.statusSolicitacaoDeCartao(result.getId());
+						.statusSolicitacaoDeCartao(result.getId().toString());
 				result.adicionaCartao(statusSolicitacaoDeCartao.toCartao(result));
 				transactionManager.atualizaEComita(result);
 			}
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println(e.getMessage());
 		}
 	}
 

@@ -18,8 +18,6 @@ services:
         MYSQL_DATABASE: propostas
      ports: 
        - "8181:8080"
-     networks: 
-       - proposta-network
      depends_on:
         - analise
         - contas
@@ -69,9 +67,8 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
     ports:
       - 3305:3306
-    networks: 
-      - proposta-network
   keycloak:
+    container_name: keycloak
     image: jboss/keycloak
     ports:
       - 18443:8443
@@ -98,7 +95,6 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Pa55w0rd
       POSTGRES_PORT_5432_TCP_ADDR: 127.0.0.1
-
   analise:
     image: 'zupacademy/analise-financeira'
     ports:
@@ -108,8 +104,6 @@ services:
       LOG_LEVEL: INFO
       URL_SISTEMA_CARTAO: http://contas:8888/api/cartoes
       JAEGER_ENDPOINT: http://jaeger:14268/api/traces
-    networks: 
-       - proposta-network
   contas:
     image: 'zupacademy/contas'
     ports:
@@ -118,8 +112,6 @@ services:
       SERVER_PORT: 8888
       LOG_LEVEL: INFO
       JAEGER_ENDPOINT: http://jaeger:14268/api/traces
-    networks: 
-       - proposta-network
   transacoes:
     image: 'zupacademy/transacoes'
     ports:
@@ -131,8 +123,6 @@ services:
       LOG_LEVEL: INFO
       KAFKA_HOST: "kafka:29092"
       JAEGER_ENDPOINT: http://jaeger:14268/api/traces
-    networks: 
-       - proposta-network
   jaeger:
     image: jaegertracing/all-in-one
     ports:
@@ -179,6 +169,3 @@ volumes:
   prometheus-volume:
   postgres-volume:
   mysql-volume:
-networks:
-  proposta-network:
-    driver: bridge

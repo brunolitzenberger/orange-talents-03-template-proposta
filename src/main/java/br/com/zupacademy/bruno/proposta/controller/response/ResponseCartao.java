@@ -2,7 +2,7 @@ package br.com.zupacademy.bruno.proposta.controller.response;
 
 import javax.validation.constraints.NotBlank;
 
-import br.com.zupacademy.bruno.proposta.controller.enums.ElegibilidadeParaCartao;
+import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoElegibilidade;
 import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoSolicitacao;
 
 public class ResponseCartao {
@@ -41,7 +41,7 @@ public class ResponseCartao {
 		return resultadoSolicitacao;
 	}
 
-	public ElegibilidadeParaCartao toElegibilidade() {
+	public ResultadoElegibilidade toElegibilidade() {
 		return resultadoSolicitacao.converter();
 	}
 

@@ -2,15 +2,15 @@ package br.com.zupacademy.bruno.proposta.controller.response;
 
 import java.time.LocalDateTime;
 
-import br.com.zupacademy.bruno.proposta.controller.enums.ElegibilidadeParaCartao;
+import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoElegibilidade;
 
 public class ResponseProposta {
 
 	private String nome;
-	private ElegibilidadeParaCartao elegibilidade;
+	private ResultadoElegibilidade elegibilidade;
 	private LocalDateTime emitidoEm;
 
-	public ResponseProposta(String nome, ElegibilidadeParaCartao elegibilidade, LocalDateTime emitidoEm) {
+	public ResponseProposta(String nome, ResultadoElegibilidade elegibilidade, LocalDateTime emitidoEm) {
 		super();
 		this.nome = nome;
 		this.elegibilidade = elegibilidade;
@@ -21,7 +21,7 @@ public class ResponseProposta {
 		return nome;
 	}
 
-	public ElegibilidadeParaCartao getElegibilidade() {
+	public ResultadoElegibilidade getElegibilidade() {
 		return elegibilidade;
 	}
 

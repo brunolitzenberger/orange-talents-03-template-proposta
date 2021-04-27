@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import br.com.zupacademy.bruno.proposta.controller.enums.ElegibilidadeParaCartao;
+import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoElegibilidade;
 import br.com.zupacademy.bruno.proposta.controller.request.RequestCartao;
 import br.com.zupacademy.bruno.proposta.controller.response.ResponseProposta;
 
@@ -31,7 +31,7 @@ public class Proposta {
 	private @NotBlank String endereco;
 	private @Positive @NotNull BigDecimal salario;
 	@Enumerated(EnumType.STRING)
-	private ElegibilidadeParaCartao elegibilidade;
+	private ResultadoElegibilidade elegibilidade;
 
 	@OneToOne(cascade = CascadeType.MERGE, mappedBy = "proposta")
 	private Cartao cartao;
@@ -54,7 +54,7 @@ public class Proposta {
 		return id;
 	}
 
-	public void adicionaElegibilidade(ElegibilidadeParaCartao elegibilidade) {
+	public void adicionaElegibilidade(ResultadoElegibilidade elegibilidade) {
 		this.elegibilidade = elegibilidade;
 	}
 

@@ -18,7 +18,7 @@ import feign.FeignException;
 
 @RestController
 @RequestMapping
-public class CartaoController {
+public class BloquearCartaoController {
 
 	private GerenciadorDeTransacao gerenciadorDeTransacao;
 
@@ -27,7 +27,7 @@ public class CartaoController {
 	private BloqueioCartao bloqueio;
 	
 
-	public CartaoController(GerenciadorDeTransacao gerenciadorDeTransacao, HttpServletRequest httpRequest,
+	public BloquearCartaoController(GerenciadorDeTransacao gerenciadorDeTransacao, HttpServletRequest httpRequest,
 			BloqueioCartao bloqueio) {
 		this.bloqueio = bloqueio;
 		this.httpRequest = httpRequest;
@@ -35,7 +35,7 @@ public class CartaoController {
 	}
 
 	@PostMapping("/{id}/bloquear")
-	public ResponseEntity<?> bloquearCartao(@PathVariable String id, @RequestBody @Valid RequestBloqueio request) {
+	public ResponseEntity<?> bloquearCartao(@PathVariable(required = true) String id, @RequestBody @Valid RequestBloqueio request) {
 		Cartao cartao = (Cartao) gerenciadorDeTransacao.encontra(Cartao.class, id);
 		if(cartao.temBloqueio()) {
 			return ResponseEntity.unprocessableEntity().body("Cartão já bloqueado.");

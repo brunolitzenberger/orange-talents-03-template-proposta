@@ -21,14 +21,14 @@ import br.com.zupacademy.bruno.proposta.controller.request.RequestBiometria;
 
 @RestController
 @RequestMapping("/biometria")
-public class BiometriaController {
+public class NovaBiometriaController {
 	
 	@PersistenceContext
 	private EntityManager em;
 
 	@PostMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> biometria(@PathVariable String id,
+	public ResponseEntity<?> biometria(@PathVariable(required = true) String id,
 			@RequestBody RequestBiometria request, 
 			UriComponentsBuilder uriComponentsBuilder){
 		Cartao cartao = em.find(Cartao.class, id);

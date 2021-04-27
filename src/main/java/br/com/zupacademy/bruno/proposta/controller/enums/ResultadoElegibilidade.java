@@ -1,6 +1,6 @@
 package br.com.zupacademy.bruno.proposta.controller.enums;
 
-public enum ElegibilidadeParaCartao {
+public enum ResultadoElegibilidade {
 	NAO_ELEGIVEL,
 	ELEGIVEL;	
 }

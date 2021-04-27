@@ -25,7 +25,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoSolicitacao;
-import br.com.zupacademy.bruno.proposta.controller.feign.CartoesCliente;
+import br.com.zupacademy.bruno.proposta.controller.feign.AnaliseCliente;
 import br.com.zupacademy.bruno.proposta.controller.feign.SolicitacaoDeCartao;
 import br.com.zupacademy.bruno.proposta.controller.request.NovaPropostaRequest;
 import br.com.zupacademy.bruno.proposta.controller.request.RequestCartao;
@@ -46,7 +46,7 @@ public class NovaPropostaControllerTest {
 	ObjectMapper jsonMapper;
 	
 	@MockBean
-	private CartoesCliente cartoesCliente;
+	private AnaliseCliente cartoesCliente;
 	@MockBean
 	private SolicitacaoDeCartao solicitacaoDeCartao;
 	

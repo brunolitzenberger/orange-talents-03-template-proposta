@@ -4,14 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 @Component
-public class VerificaCartao {
+public class AgendaCartao {
 	
 	@Autowired
-	private CartaoPronto gerarCartao;
+	private VerificarCartao verificarCartao;
 	
 	@Scheduled(fixedDelay = 2000)
 	private void verifica() {
-		gerarCartao.verificaCartao();
+		verificarCartao.verificar();
 	}
 
 }

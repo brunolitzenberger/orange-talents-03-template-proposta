@@ -17,12 +17,12 @@ import javax.validation.constraints.Positive;
 
 import com.sun.istack.NotNull;
 
-import br.com.zupacademy.bruno.proposta.controller.enums.AvisoViagem;
-import br.com.zupacademy.bruno.proposta.controller.enums.Bloqueios;
-import br.com.zupacademy.bruno.proposta.controller.enums.Carteira;
-import br.com.zupacademy.bruno.proposta.controller.enums.Parcela;
-import br.com.zupacademy.bruno.proposta.controller.enums.Renegociacao;
-import br.com.zupacademy.bruno.proposta.controller.enums.Vencimento;
+import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoAvisos;
+import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoBloqueio;
+import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoCarteira;
+import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoParcela;
+import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoRenegociacao;
+import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoVencimento;
 
 @Entity
 public class Cartao {
@@ -36,21 +36,23 @@ public class Cartao {
 
 	@OneToOne(mappedBy = "cartao", cascade = CascadeType.MERGE)
 	private Bloqueio bloqueio;
-	@Enumerated(EnumType.STRING)
-	private Bloqueios estadoDoCartao;
 	
 	@Enumerated(EnumType.STRING)
-	private AvisoViagem avisos;
+	private ResultadoBloqueio estadoDoCartao;
+	
+	@OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+	private Set<AvisoViagem> avisos = new HashSet<>();
+	
 	@Enumerated(EnumType.STRING)
-	private Carteira carteiras;
+	private ResultadoCarteira carteiras;
 	@Enumerated(EnumType.STRING)
-	private Parcela parcelas;
+	private ResultadoParcela parcelas;
 	@Positive
 	private Integer limite;
 	@Enumerated(EnumType.STRING)
-	private Renegociacao renegociacao;
+	private ResultadoRenegociacao renegociacao;
 	@Enumerated(EnumType.STRING)
-	private Vencimento vencimento;
+	private ResultadoVencimento vencimento;
 
 	@OneToMany(mappedBy = "cartao")
 	private Set<Biometria> biometrias = new HashSet<>();
@@ -83,26 +85,26 @@ public class Cartao {
 
 	public void adicionaBloqueio(Bloqueio bloqueio) {
 		this.bloqueio = bloqueio;
-		this.estadoDoCartao = Bloqueios.BLOQUEADO;
+		this.estadoDoCartao = ResultadoBloqueio.BLOQUEADO;
 	}
 
-	public void atualizaVencimento(Vencimento vencimento) {
+	public void atualizaVencimento(ResultadoVencimento vencimento) {
 		this.vencimento = vencimento;
 	}
 
 	public void adicionaAvisoViagem(AvisoViagem aviso) {
-		this.avisos = aviso;
+		this.avisos.add(aviso);
 	}
 
-	public void adicionaParcela(Parcela parcela) {
+	public void adicionaParcela(ResultadoParcela parcela) {
 		this.parcelas = parcela;
 	}
 
-	public void adicionaRenegociacao(Renegociacao renegociacao) {
+	public void adicionaRenegociacao(ResultadoRenegociacao renegociacao) {
 		this.renegociacao = renegociacao;
 	}
 
-	public void adicionaCarteira(Carteira carteira) {
+	public void adicionaCarteira(ResultadoCarteira carteira) {
 		this.carteiras = carteira;
 	}
 

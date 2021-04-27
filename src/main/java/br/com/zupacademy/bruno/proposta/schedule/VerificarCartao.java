@@ -7,14 +7,14 @@ import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.com.zupacademy.bruno.proposta.controller.enums.ElegibilidadeParaCartao;
+import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoElegibilidade;
 import br.com.zupacademy.bruno.proposta.controller.feign.SolicitacaoDeCartao;
 import br.com.zupacademy.bruno.proposta.controller.model.Proposta;
 import br.com.zupacademy.bruno.proposta.controller.response.ResponseSolicitacaoCartao;
 import br.com.zupacademy.bruno.proposta.manager.GerenciadorDeTransacao;
 
 @Component
-public class CartaoPronto {
+public class VerificarCartao {
 
 	@Autowired
 	private EntityManager em;
@@ -25,23 +25,23 @@ public class CartaoPronto {
 	@Autowired
 	private GerenciadorDeTransacao transactionManager;
 
-	public void verificaCartao() {
+	public void verificar() {
 		/**
 		 * Faz uma busca por propostas que não tenham cartão e que tenha a avaliação
 		 * financeira elegível
 		 */
-		List<Proposta> cartaoEmEspera = em
+		List<Proposta> propostasElegiveis = em
 				.createQuery("SELECT p FROM Proposta p " 
 						+ "LEFT JOIN p.cartao c " 
 						+ "WHERE c IS NULL "
 						+ "AND  p.elegibilidade = :elegibilidade", Proposta.class)
-				.setParameter("elegibilidade", ElegibilidadeParaCartao.ELEGIVEL).getResultList();
+				.setParameter("elegibilidade", ResultadoElegibilidade.ELEGIVEL).getResultList();
 		try {
-			for (Proposta result : cartaoEmEspera) {
+			for (Proposta proposta : propostasElegiveis) {
 				ResponseSolicitacaoCartao statusSolicitacaoDeCartao = solicitacaoDeCartao
-						.statusSolicitacaoDeCartao(result.getId().toString());
-				result.adicionaCartao(statusSolicitacaoDeCartao.toCartao(result));
-				transactionManager.atualizaEComita(result);
+						.statusSolicitacaoDeCartao(proposta.getId().toString());
+				proposta.adicionaCartao(statusSolicitacaoDeCartao.toCartao(proposta));
+				transactionManager.atualizaEComita(proposta);
 			}
 
 		} catch (Exception e) {

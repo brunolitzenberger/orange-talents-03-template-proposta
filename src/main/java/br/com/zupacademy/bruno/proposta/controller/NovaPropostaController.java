@@ -18,7 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.google.gson.Gson;
 
-import br.com.zupacademy.bruno.proposta.controller.feign.CartoesCliente;
+import br.com.zupacademy.bruno.proposta.controller.feign.AnaliseCliente;
 import br.com.zupacademy.bruno.proposta.controller.model.Proposta;
 import br.com.zupacademy.bruno.proposta.controller.request.NovaPropostaRequest;
 import br.com.zupacademy.bruno.proposta.controller.response.ResponseCartao;
@@ -30,12 +30,12 @@ import feign.FeignException;
 public class NovaPropostaController {
 
 	private GerenciadorDeTransacao gerenciadorDeTransacao;
-	private CartoesCliente cliente;
+	private AnaliseCliente cliente;
 	@PersistenceContext
 	private EntityManager em;
 
 	
-	public NovaPropostaController(GerenciadorDeTransacao gerenciadorDeTransacao, CartoesCliente cliente) {
+	public NovaPropostaController(GerenciadorDeTransacao gerenciadorDeTransacao, AnaliseCliente cliente) {
 		this.gerenciadorDeTransacao = gerenciadorDeTransacao;
 		this.cliente = cliente;
 	}
@@ -54,7 +54,7 @@ public class NovaPropostaController {
 	
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> acompanhar(@PathVariable Long id){	
+	public ResponseEntity<?> acompanhar(@PathVariable(required = true) Long id){	
 		Proposta proposta = em.find(Proposta.class, id);
 		if(proposta == null) {
 			return ResponseEntity.notFound().build();

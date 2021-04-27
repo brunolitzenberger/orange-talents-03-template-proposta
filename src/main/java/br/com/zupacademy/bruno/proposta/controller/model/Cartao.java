@@ -1,11 +1,8 @@
 package br.com.zupacademy.bruno.proposta.controller.model;
 
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,27 +11,29 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
 
 import com.sun.istack.NotNull;
 
 import br.com.zupacademy.bruno.proposta.controller.enums.AvisoViagem;
-import br.com.zupacademy.bruno.proposta.controller.enums.Bloqueios;
 import br.com.zupacademy.bruno.proposta.controller.enums.Carteira;
 import br.com.zupacademy.bruno.proposta.controller.enums.Parcela;
 import br.com.zupacademy.bruno.proposta.controller.enums.Renegociacao;
 import br.com.zupacademy.bruno.proposta.controller.enums.Vencimento;
-import br.com.zupacademy.bruno.proposta.controller.request.RequestBiometria;
 
 @Entity
 public class Cartao {
 
 	@Id
 	private String id;
+	@PastOrPresent
 	private LocalDateTime emitidoEm;
+	@NotBlank
 	private String titular;
-	@Enumerated(EnumType.STRING)
-	private Bloqueios bloqueios;
+
+	@OneToOne(mappedBy = "cartao", cascade = CascadeType.MERGE)
+	private Bloqueio bloqueio;
 	@Enumerated(EnumType.STRING)
 	private AvisoViagem avisos;
 	@Enumerated(EnumType.STRING)
@@ -68,8 +67,16 @@ public class Cartao {
 		this.proposta = proposta;
 	}
 
-	public void adicionaBloqueio(Bloqueios bloqueios) {
-		this.bloqueios = bloqueios;
+	public String getId() {
+		return id;
+	}
+	
+	public boolean temBloqueio() {
+		return this.bloqueio != null;
+	}
+
+	public void adicionaBloqueio(Bloqueio bloqueio) {
+		this.bloqueio = bloqueio;
 	}
 
 	public void atualizaVencimento(Vencimento vencimento) {

@@ -9,6 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import feign.FeignException;
+
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
@@ -24,4 +26,6 @@ public class ControllerExceptionHandler {
 		
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
 	}
+	
+
 }

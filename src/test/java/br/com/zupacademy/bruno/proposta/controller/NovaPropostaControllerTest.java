@@ -50,26 +50,20 @@ public class NovaPropostaControllerTest {
 	@MockBean
 	private SolicitacaoDeCartao solicitacaoDeCartao;
 	
-/*
-	@Test
-	public void deveriaValidarCpf() throws Exception {
 
-		RequestCartao requestCartao = new RequestCartao("21070069035", "Bruno", "1");
-		ResponseCartao responseCartao = new ResponseCartao("21070069035", "1", "Bruno", ResultadoSolicitacao.SEM_RESTRICAO);
-		Mockito.when(cartoesCliente.elegibilidadeCartao(requestCartao)).thenReturn(responseCartao);
-		ResponseSolicitacaoCartao responseSolicitacaoCartao = new ResponseSolicitacaoCartao("1", LocalDateTime.now(), "Bruno", new ArrayList<>(),  new ArrayList<>(),  new ArrayList<>(),  new ArrayList<>(), 2500, null, new VencimentoResponse("1", 30, LocalDateTime.now()), "1");
-		Mockito.when(solicitacaoDeCartao.statusSolicitacaoDeCartao("1")).thenReturn(responseSolicitacaoCartao);
+	@Test
+	public void deveriaCriarProposta() throws Exception {
+
 
 		mock.perform(post("/propostas")
-		.content(this.json(new NovaPropostaRequest("21070069035", "bruno@zup.com.br", "Bruno", "dokasodkasodk", BigDecimal.TEN)))
+		.content(this.json(new NovaPropostaRequest("31995813079", "bruno@zup.com.br", "Bruno", "dokasodkasodk", BigDecimal.TEN)))
 		.contentType(MediaType.APPLICATION_JSON))
-			.andExpect(status().isCreated())
-			.andExpect(header().string(LOCATION, endsWith("/propostas/1")));
+			.andExpect(status().isCreated());
 		
 	}
 
 	private String json(NovaPropostaRequest request) throws JsonProcessingException {
 		return jsonMapper.writeValueAsString(request);
 	}
-*/
+
 }

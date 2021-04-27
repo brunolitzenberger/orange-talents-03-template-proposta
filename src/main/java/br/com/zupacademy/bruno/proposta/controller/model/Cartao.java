@@ -13,10 +13,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Positive;
 
 import com.sun.istack.NotNull;
 
 import br.com.zupacademy.bruno.proposta.controller.enums.AvisoViagem;
+import br.com.zupacademy.bruno.proposta.controller.enums.Bloqueios;
 import br.com.zupacademy.bruno.proposta.controller.enums.Carteira;
 import br.com.zupacademy.bruno.proposta.controller.enums.Parcela;
 import br.com.zupacademy.bruno.proposta.controller.enums.Renegociacao;
@@ -27,7 +29,7 @@ public class Cartao {
 
 	@Id
 	private String id;
-	@PastOrPresent
+	
 	private LocalDateTime emitidoEm;
 	@NotBlank
 	private String titular;
@@ -35,11 +37,15 @@ public class Cartao {
 	@OneToOne(mappedBy = "cartao", cascade = CascadeType.MERGE)
 	private Bloqueio bloqueio;
 	@Enumerated(EnumType.STRING)
+	private Bloqueios estadoDoCartao;
+	
+	@Enumerated(EnumType.STRING)
 	private AvisoViagem avisos;
 	@Enumerated(EnumType.STRING)
 	private Carteira carteiras;
 	@Enumerated(EnumType.STRING)
 	private Parcela parcelas;
+	@Positive
 	private Integer limite;
 	@Enumerated(EnumType.STRING)
 	private Renegociacao renegociacao;
@@ -61,7 +67,7 @@ public class Cartao {
 	public Cartao(String id, LocalDateTime emitidoEm, String titular, Integer limite, Proposta proposta) {
 		super();
 		this.id = id;
-		this.emitidoEm = emitidoEm;
+		this.emitidoEm = emitidoEm;	
 		this.titular = titular;
 		this.limite = limite;
 		this.proposta = proposta;
@@ -77,6 +83,7 @@ public class Cartao {
 
 	public void adicionaBloqueio(Bloqueio bloqueio) {
 		this.bloqueio = bloqueio;
+		this.estadoDoCartao = Bloqueios.BLOQUEADO;
 	}
 
 	public void atualizaVencimento(Vencimento vencimento) {

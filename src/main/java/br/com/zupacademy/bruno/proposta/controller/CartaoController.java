@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.zupacademy.bruno.proposta.controller.feign.BloqueioCartao;
 import br.com.zupacademy.bruno.proposta.controller.model.Cartao;
 import br.com.zupacademy.bruno.proposta.controller.request.RequestBloqueio;
-import br.com.zupacademy.bruno.proposta.controller.response.ResponseBloqueio;
 import br.com.zupacademy.bruno.proposta.manager.GerenciadorDeTransacao;
 import feign.FeignException;
 
@@ -26,6 +25,7 @@ public class CartaoController {
 	private HttpServletRequest httpRequest;
 
 	private BloqueioCartao bloqueio;
+	
 
 	public CartaoController(GerenciadorDeTransacao gerenciadorDeTransacao, HttpServletRequest httpRequest,
 			BloqueioCartao bloqueio) {

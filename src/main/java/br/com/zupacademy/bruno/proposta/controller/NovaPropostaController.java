@@ -33,6 +33,7 @@ public class NovaPropostaController {
 	private CartoesCliente cliente;
 	@PersistenceContext
 	private EntityManager em;
+
 	
 	public NovaPropostaController(GerenciadorDeTransacao gerenciadorDeTransacao, CartoesCliente cliente) {
 		this.gerenciadorDeTransacao = gerenciadorDeTransacao;

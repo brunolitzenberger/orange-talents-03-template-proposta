@@ -3,6 +3,7 @@ package br.com.zupacademy.bruno.proposta.controller.model;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -12,14 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Positive;
 
 import com.sun.istack.NotNull;
 
-import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoAvisos;
+import br.com.zupacademy.bruno.proposta.controller.enums.CarteiraDigital;
 import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoBloqueio;
-import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoCarteira;
 import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoParcela;
 import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoRenegociacao;
 import br.com.zupacademy.bruno.proposta.controller.enums.ResultadoVencimento;
@@ -29,22 +28,22 @@ public class Cartao {
 
 	@Id
 	private String id;
-	
+
 	private LocalDateTime emitidoEm;
 	@NotBlank
 	private String titular;
 
 	@OneToOne(mappedBy = "cartao", cascade = CascadeType.MERGE)
 	private Bloqueio bloqueio;
-	
+
 	@Enumerated(EnumType.STRING)
 	private ResultadoBloqueio estadoDoCartao;
-	
+
 	@OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
 	private Set<AvisoViagem> avisos = new HashSet<>();
-	
-	@Enumerated(EnumType.STRING)
-	private ResultadoCarteira carteiras;
+
+	@OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+	private Set<Carteira> carteiras;
 	@Enumerated(EnumType.STRING)
 	private ResultadoParcela parcelas;
 	@Positive
@@ -57,7 +56,7 @@ public class Cartao {
 	@OneToMany(mappedBy = "cartao")
 	private Set<Biometria> biometrias = new HashSet<>();
 
-	@OneToOne
+	@OneToOne()
 	@NotNull
 	private Proposta proposta;
 
@@ -69,7 +68,7 @@ public class Cartao {
 	public Cartao(String id, LocalDateTime emitidoEm, String titular, Integer limite, Proposta proposta) {
 		super();
 		this.id = id;
-		this.emitidoEm = emitidoEm;	
+		this.emitidoEm = emitidoEm;
 		this.titular = titular;
 		this.limite = limite;
 		this.proposta = proposta;
@@ -78,7 +77,7 @@ public class Cartao {
 	public String getId() {
 		return id;
 	}
-	
+
 	public boolean temBloqueio() {
 		return this.bloqueio != null;
 	}
@@ -104,12 +103,21 @@ public class Cartao {
 		this.renegociacao = renegociacao;
 	}
 
-	public void adicionaCarteira(ResultadoCarteira carteira) {
-		this.carteiras = carteira;
+	public void adicionaCarteira(Carteira carteira) {
+		this.carteiras.add(carteira);
 	}
 
 	public LocalDateTime dataEmissaoCartao() {
 		return emitidoEm;
 	}
+
+	public boolean validaCarteira(CarteiraDigital carteira) {
+		Set<Carteira> duplicado = this.carteiras.stream().filter(c -> carteira.equals(c.getCarteira()))
+				.collect(Collectors.toSet());
+		return duplicado.size() > 0;
+		
+	}
+	
+	
 
 }

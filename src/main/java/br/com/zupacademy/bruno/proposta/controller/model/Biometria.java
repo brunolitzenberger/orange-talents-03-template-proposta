@@ -2,11 +2,11 @@ package br.com.zupacademy.bruno.proposta.controller.model;
 
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
@@ -14,15 +14,17 @@ import javax.validation.constraints.PastOrPresent;
 
 @Entity
 public class Biometria {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue
+	private UUID id;
+
 	@NotBlank
 	private String digital;
-	
+
 	@PastOrPresent
 	private LocalDate dataAssociacao = LocalDate.now();
-	
+
 	@ManyToOne(cascade = CascadeType.MERGE)
 	private Cartao cartao;
 
@@ -41,10 +43,8 @@ public class Biometria {
 		return Base64.getEncoder().encodeToString(digital.getBytes());
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return this.id;
 	}
-
-	
 
 }

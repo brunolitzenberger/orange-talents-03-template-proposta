@@ -2,8 +2,8 @@ package br.com.zupacademy.bruno.proposta.controller.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,8 +16,8 @@ import javax.validation.constraints.NotBlank;
 public class AvisoViagem {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue
+	private UUID id;
 	private @NotBlank String destino;
 	private @NotBlank String userAgent;
 	private @NotBlank String ipDoCliente;

@@ -8,7 +8,7 @@ import br.com.zupacademy.bruno.proposta.controller.request.RequestBloqueio;
 import br.com.zupacademy.bruno.proposta.controller.response.ResponseBloqueio;
 
 @FeignClient(name = "bloqueio", url = "${proposta.cartao.url}")
-public interface BloqueioCartao {
+public interface BloqueioCartaoLegado {
 
 	@PostMapping("/api/cartoes/{id}/bloqueios")
 	ResponseBloqueio solicitacaoDeBloqueio(@PathVariable String id, RequestBloqueio request);

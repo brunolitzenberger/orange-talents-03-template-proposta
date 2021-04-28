@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.zupacademy.bruno.proposta.controller.feign.BloqueioCartao;
+import br.com.zupacademy.bruno.proposta.controller.feign.BloqueioCartaoLegado;
 import br.com.zupacademy.bruno.proposta.controller.model.Cartao;
 import br.com.zupacademy.bruno.proposta.controller.request.RequestBloqueio;
 import br.com.zupacademy.bruno.proposta.manager.GerenciadorDeTransacao;
@@ -24,11 +24,11 @@ public class BloquearCartaoController {
 
 	private HttpServletRequest httpRequest;
 
-	private BloqueioCartao bloqueio;
+	private BloqueioCartaoLegado bloqueio;
 	
 
 	public BloquearCartaoController(GerenciadorDeTransacao gerenciadorDeTransacao, HttpServletRequest httpRequest,
-			BloqueioCartao bloqueio) {
+			BloqueioCartaoLegado bloqueio) {
 		this.bloqueio = bloqueio;
 		this.httpRequest = httpRequest;
 		this.gerenciadorDeTransacao = gerenciadorDeTransacao;

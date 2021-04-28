@@ -1,6 +1,7 @@
 package br.com.zupacademy.bruno.proposta.controller;
 
 import java.net.URI;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -54,9 +55,9 @@ public class NovaPropostaController {
 	
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> acompanhar(@PathVariable(required = true) Long id){	
+	public ResponseEntity<?> acompanhar(@PathVariable(required = true) UUID id){	
 		Proposta proposta = em.find(Proposta.class, id);
-		if(proposta == null) {
+		if(proposta == null || !proposta.temCartao()) {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok().body(proposta.toResponse());

@@ -1,13 +1,14 @@
 package br.com.zupacademy.bruno.proposta.controller.model;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
@@ -23,8 +24,9 @@ import br.com.zupacademy.bruno.proposta.controller.response.ResponseProposta;
 public class Proposta {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue
+	@Column(columnDefinition = "BINARY(16)")
+	private UUID id;
 	private @NotBlank String documento;
 	private @Email @NotBlank String email;
 	private @NotBlank String nome;
@@ -50,7 +52,7 @@ public class Proposta {
 		this.salario = salario;
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 

@@ -3,6 +3,7 @@ package br.com.zupacademy.bruno.proposta.schedule;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ public class VerificarCartao {
 
 	@Autowired
 	private GerenciadorDeTransacao transactionManager;
+
 
 	public void verificar() {
 		/**

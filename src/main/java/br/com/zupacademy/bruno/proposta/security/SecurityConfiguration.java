@@ -49,6 +49,7 @@ public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter{
 	        http.
 	        csrf().disable()
 	        .authorizeRequests()
+	          .antMatchers("/actuator/**").permitAll()	          
 	          .anyRequest()
 	          .authenticated();
 	    }

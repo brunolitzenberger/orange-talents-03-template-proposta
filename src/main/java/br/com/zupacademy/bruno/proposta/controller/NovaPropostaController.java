@@ -24,6 +24,7 @@ import br.com.zupacademy.bruno.proposta.controller.model.Proposta;
 import br.com.zupacademy.bruno.proposta.controller.request.NovaPropostaRequest;
 import br.com.zupacademy.bruno.proposta.controller.response.ResponseCartao;
 import br.com.zupacademy.bruno.proposta.manager.GerenciadorDeTransacao;
+import br.com.zupacademy.bruno.proposta.metricas.Metricas;
 import feign.FeignException;
 
 @RestController
@@ -32,13 +33,15 @@ public class NovaPropostaController {
 
 	private GerenciadorDeTransacao gerenciadorDeTransacao;
 	private AnaliseCliente cliente;
+	private Metricas metricas;
 	@PersistenceContext
 	private EntityManager em;
 
 	
-	public NovaPropostaController(GerenciadorDeTransacao gerenciadorDeTransacao, AnaliseCliente cliente) {
+	public NovaPropostaController(GerenciadorDeTransacao gerenciadorDeTransacao, AnaliseCliente cliente, Metricas metricas) {
 		this.gerenciadorDeTransacao = gerenciadorDeTransacao;
 		this.cliente = cliente;
+		this.metricas = metricas;
 	}
 	
 	
@@ -50,6 +53,8 @@ public class NovaPropostaController {
 		solicitarCartao(novaProposta);
 		gerenciadorDeTransacao.atualizaEComita(novaProposta);
 		URI uri = builder.path("/propostas/{id}").build(novaProposta.getId());
+
+		metricas.meuContador();
 		return ResponseEntity.created(uri).build();
 	}
 	

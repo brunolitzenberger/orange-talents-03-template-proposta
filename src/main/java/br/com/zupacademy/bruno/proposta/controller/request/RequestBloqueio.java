@@ -10,6 +10,10 @@ public class RequestBloqueio {
 	@NotBlank
 	private String sistemaResponsavel;
 
+	public RequestBloqueio(String sistemaResponsavel) {
+		this.sistemaResponsavel = sistemaResponsavel;
+	}
+
 	public void setSistemaResponsavel(String sistemaResponsavel) {
 		this.sistemaResponsavel = sistemaResponsavel;
 	}

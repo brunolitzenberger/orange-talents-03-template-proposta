@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,7 +28,7 @@ public class Proposta {
 	@GeneratedValue
 	@Column(columnDefinition = "BINARY(16)")
 	private UUID id;
-	private @NotBlank String documento;
+	private @NotBlank @Convert(converter = CryptoConverter.class) String documento;
 	private @Email @NotBlank String email;
 	private @NotBlank String nome;
 	private @NotBlank String endereco;
@@ -51,6 +52,7 @@ public class Proposta {
 		this.endereco = endereco;
 		this.salario = salario;
 	}
+	
 
 	public UUID getId() {
 		return id;

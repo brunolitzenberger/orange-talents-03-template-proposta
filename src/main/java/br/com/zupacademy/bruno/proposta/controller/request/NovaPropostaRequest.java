@@ -15,10 +15,11 @@ public class NovaPropostaRequest {
 
 	@NotBlank
 	@CpfOuCnpj
-	@NotBlank @UniqueValue(domainClass = Proposta.class, fieldName = "documento", message = "Proposta já cadastrada")
+	@NotBlank @UniqueValue(domainClass = Proposta.class, fieldName = "documento", message = "Proposta já cadastrada.")
 	private String documento;
 	@Email
 	@NotBlank
+	@UniqueValue(domainClass = Proposta.class, fieldName = "email", message = "Email já cadastrado.")
 	private String email;
 	@NotBlank
 	private String nome;

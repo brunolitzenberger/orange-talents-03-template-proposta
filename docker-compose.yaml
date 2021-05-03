@@ -17,6 +17,7 @@ services:
         DATABASE_PASSWORD: 12345
         MYSQL_DATABASE: propostas
         JAEGER_ENDPOINT: http://jaeger:14268/api/traces
+        KEY: password
      ports: 
        - "8181:8181"
      depends_on:
